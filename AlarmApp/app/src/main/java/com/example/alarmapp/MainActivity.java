@@ -28,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
         data.add("알람1");
         data.add("알람2");
         data.add("알람3");
+        data.add("알람4");
+        data.add("알람5");
+        data.add("알람6");
+        data.add("알람7");
+        data.add("알람8");
+        data.add("알람9");
         adapter.notifyDataSetChanged();
     }
 }
