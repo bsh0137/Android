@@ -8,12 +8,14 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
@@ -23,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import static java.util.Collections.rotate;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -98,8 +102,33 @@ public class MainActivity extends AppCompatActivity {
             int exifOrientation;
             int exifDegree;
 
+            if (exif != null){
+                exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION.ExifInterface.ORIENTATION_NORMAL);
+                exifDegree = exifOrientationToDegrees(exifOrientation);
+            } else {
+                exifDegree = 0;
+            }
+
+            ((ImageView) findViewById(R.id.iv_result)).setImageBitmap(rotate(bitmap.exifDegree));
 
         }
+    }
+
+    private int exifOrientationToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
+    }
+
+    private  Bitmap rotate(Bitmap bitmap, float degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
     PermissionListener permissionListener = new PermissionListener() {
