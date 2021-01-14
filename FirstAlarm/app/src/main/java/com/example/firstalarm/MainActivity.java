@@ -132,11 +132,32 @@ public class MainActivity extends AppCompatActivity {
         btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mediaPlayer = MediaPlayer.create(MainActivity.this,R.ra )
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.alarm);
+                mediaPlayer.start();
+            }
+        });
+
+        // 정지버튼 눌렀을 때
+        btn_stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 정지 버튼
+                mediaPlayer.stop();
+                // 초기화
+                mediaPlayer.reset();
             }
         });
     }
 
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        // MediaPlayer 해지
+        if(mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
 
     void diaryNotification(Calendar calendar)
     {
