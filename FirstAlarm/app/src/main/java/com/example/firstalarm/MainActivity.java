@@ -13,22 +13,28 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.firstalarm.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     Button btn_play;
     Button btn_stop;
+
+    ListView listview;
 
     MediaPlayer mediaPlayer;
 
@@ -121,6 +127,23 @@ public class MainActivity extends AppCompatActivity {
 
 
                 diaryNotification(calendar);
+
+                listview = (ListView)findViewById(R.id.listview);
+
+                List<String> data = new ArrayList<>();
+
+                String _hour= Integer.toString(hour_24);
+                String _minute= Integer.toString(minute);
+                String _message = _hour.concat("시 ");
+                _message = _message.concat(_minute);
+                _message = _message.concat(" 분에 알람이 설정되었습니다.");
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_list_item_1,data);
+                listview.setAdapter(adapter);
+
+
+                data.add(_message);
+                adapter.notifyDataSetChanged();
             }
 
         });
@@ -142,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 정지 버튼
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.alarm);
                 mediaPlayer.stop();
                 // 초기화
                 mediaPlayer.reset();

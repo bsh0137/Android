@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -23,9 +24,9 @@ import java.util.Locale;
 import static android.content.Context.MODE_PRIVATE;
 
 public class AlarmReceiver extends BroadcastReceiver {
+    MediaPlayer mediaPlayer;
     @Override
     public void onReceive(Context context, Intent intent) {
-
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent notificationIntent = new Intent(context, MainActivity.class);
@@ -36,7 +37,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingI = PendingIntent.getActivity(context, 0,
                 notificationIntent, 0);
 
-
+        mediaPlayer = MediaPlayer.create(context, R.raw.alarm);
+        mediaPlayer.start();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");
 
 
